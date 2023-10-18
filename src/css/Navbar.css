@@ -1,0 +1,26 @@
+.navbar {
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box-shadow for a light shadow effect */
+  padding: 15px 30px; /* Adjusted padding for increased size */
+}
+
+.Navbar .nav-link {
+  text-decoration: none;
+  color: #333;
+  padding: 0 30px; 
+  font-size: 16px; 
+}
+
+.nav-link:hover {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.nav-link-hover-button:hover{
+  background-color: rgb(255, 197, 197);
+}
+
+.custom-navbar {
+  height: 80px; 
+}
+
