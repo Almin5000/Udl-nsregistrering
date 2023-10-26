@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../css/Aflevering.css';
 
 const Aflevering = () => {
   const [formData, setFormData] = useState({
-    elevnummer: '',
-    computernummer: '',
+    registreringsNummer: '',
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -21,17 +21,30 @@ const Aflevering = () => {
     e.preventDefault();
     const errors = {};
     // Add validation logic here
-    if (formData.elevnummer.trim() === '') {
-      errors.elevnummer = 'Elevnummer is required';
-    }
-    if (formData.computernummer.trim() === '') {
-      errors.computernummer = 'Computernummer is required';
+    if (formData.registreringsNummer.trim() === '') {
+      errors.registreringsNummer = 'RegistreringsNummer er påkrævet';
     }
 
     if (Object.keys(errors).length === 0) {
-      alert('Afleveret!');
+      postItem();
     } else {
       setFormErrors(errors);
+    }
+  };
+
+  const postItem = async () => {
+    try {
+      const response = await axios.post(
+        'https://gorilla-informed-asp.ngrok-free.app/Udlån/AfleverLån',
+        {
+          registreringsNummer: formData.registreringsNummer,
+        }
+      );
+      console.log('POST Request Response:', response.data);
+      alert('Afleveret!');
+    } catch (error) {
+      console.error('Error posting item:', error);
+      alert('Der opstod en fejl under aflevering. Prøv igen senere.');
     }
   };
 
@@ -41,32 +54,20 @@ const Aflevering = () => {
       <div className="form-container">
         <form className="form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Elevnummer:</label>
+            <label>Registrerings Nummer:</label>
             <input
               type="text"
-              name="elevnummer"
-              value={formData.elevnummer}
+              name="registreringsNummer"
+              value={formData.registreringsNummer}
               onChange={handleChange}
               required
             />
-            {formErrors.elevnummer && <div className="error">{formErrors.elevnummer}</div>}
-          </div>
-
-          <div className="form-group">
-            <label>Computernummer:</label>
-            <input
-              type="text"
-              name="computernummer"
-              value={formData.computernummer}
-              onChange={handleChange}
-              required
-            />
-            {formErrors.computernummer && <div className="error">{formErrors.computernummer}</div>}
+            {formErrors.registreringsNummer && <div className="error">{formErrors.registreringsNummer}</div>}
           </div>
 
           <div className="form-group mx-auto">
             <button type="submit" className="submit-button">
-              Aflever lån
+              Aflever
             </button>
           </div>
         </form>

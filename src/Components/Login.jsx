@@ -1,17 +1,40 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "../css/Login.css"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [adgangskode, setAdgangskode] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "password") {
-      alert("Login successful");
-    } else {
-      alert("Ugyldigt oplysninger.");
-    }
+    console.log("Email:", email);
+    console.log("Adgangskode:", adgangskode);
+    axios.post('https://gorilla-informed-asp.ngrok-free.app/Bruger/login', {
+      email: email,
+      adgangskode: adgangskode
+    })
+      .then(response => {
+        navigate("/Aflevering");
+        alert("Login successful");
+      })
+      .catch(error => {
+        if (error.response) {
+          // Request was made and server responded with a status code that falls out of the range
+          alert("Ugyldigt Request.");
+          console.error('Server Error', error.response.data);
+        } else if (error.request) {
+          // The request was made but no response was received
+          alert("Ingen svar fra serveren.");
+          console.error('No response from server', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          alert("Ukendt fejl.");
+          console.error('Request setup error', error.message);
+        }
+      });
   };
 
   return (
@@ -37,16 +60,16 @@ const Login = () => {
         <h2 style={{ marginBottom: "20px", textAlign: "left", color: "black" }}>Login</h2>
         <input
           type="text"
-          placeholder="Brugernavn"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           style={{ width: "200px", marginBottom: "10px", padding: "10px", borderRadius: "3px" }}
         />
         <input
           type="password"
           placeholder="Adgangskode"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={adgangskode}
+          onChange={(e) => setAdgangskode(e.target.value)}
           style={{ width: "200px", marginBottom: "10px", padding: "10px", borderRadius: "3px" }}
         />
         <button type="submit" className="login-button">Login</button>

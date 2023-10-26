@@ -23,6 +23,7 @@ function MobileOffcanvasNavbar() {
             <Nav.Link href="/Registrering" className="nav-link-hover">Registrering</Nav.Link>
             <Nav.Link href="/Opret-Bruger" className="nav-link-hover">Opret Bruger</Nav.Link>
             <Nav.Link href="/Udlaansoversigt" className="nav-link-hover">Udlånsoversigt</Nav.Link>
+            {/* <Nav.Link href="/Computeroversigt" className="nav-link-hover">Computer oversigt</Nav.Link> */}
             <Nav.Link href="/Aflevering" className="nav-link-hover">Aflever</Nav.Link>
           </Nav>
           <Nav>
@@ -44,6 +45,7 @@ function MobileOffcanvasNavbar() {
             <Nav.Link href="/Registrering">Registrering</Nav.Link>
             <Nav.Link href="/Opret-Bruger">Opret Bruger</Nav.Link>
             <Nav.Link href="/Udlaansoversigt">Udlånsoversigt</Nav.Link>
+            {/* <Nav.Link href="/Computeroversigt">Computer oversigt</Nav.Link> */}
             <Nav.Link href="/Aflevering">Aflever</Nav.Link>
           </Nav>
           <Form className="d-flex">

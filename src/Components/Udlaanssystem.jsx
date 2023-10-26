@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../css/Udlaanssystem.css';
 
 const Udlaanssystem = () => {
@@ -7,10 +8,9 @@ const Udlaanssystem = () => {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minUdlobsdato = tomorrow.toISOString().split('T')[0];
 
-
   const [formData, setFormData] = useState({
-    elevnummer: '',
-    computernummer: '',
+    elevNummer: '',
+    registreringsNummer: '',
     udlaansdato: '',
     udlobsdato: '',
   });
@@ -28,15 +28,15 @@ const Udlaanssystem = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = {};
-    const numRegex = /^[0-9\b]+$/;
-    if (!formData.elevnummer.match(numRegex)) {
-      errors.elevnummer = 'Elevnummer bør kun indeholde tal';
+
+    if (formData.elevNummer.trim() === '') {
+      errors.elevNummer = 'Elevnummer bør kun indeholde tal';
     }
-    if (formData.elevnummer.trim() === '') {
-      errors.elevnummer = 'Elevnummer er påkrævet';
+    if (formData.elevNummer.trim() === '') {
+      errors.elevNummer = 'Elevnummer er påkrævet';
     }
-    if (formData.computernummer.trim() === '') {
-      errors.computernummer = 'Computernummer er påkrævet';
+    if (formData.registreringsNummer.trim() === '') {
+      errors.registreringsNummer = 'Registreringsnummer er påkrævet';
     }
     if (formData.udlaansdato.trim() === '') {
       errors.udlaansdato = 'Udlånsdato er påkrævet';
@@ -46,7 +46,28 @@ const Udlaanssystem = () => {
     }
 
     if (Object.keys(errors).length === 0) {
-      alert('Udlånt!');
+      axios
+        .post('https://gorilla-informed-asp.ngrok-free.app/Udlån/RentComputer', {
+          elevNummer: formData.elevNummer.toString(),
+          registreringsNummer: formData.registreringsNummer.toString(),
+          udlaansdato: formData.udlaansdato,
+          udlobsdato: formData.udlobsdato,
+        })
+        .then((response) => {
+          alert('Udlånt!');
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert('Ugyldigt Request.');
+            console.error('Server Error', error.response.data);
+          } else if (error.request) {
+            alert('Ingen svar fra serveren.');
+            console.error('No response from server', error.request);
+          } else {
+            alert('Ukendt fejl.');
+            console.error('Request setup error', error.message);
+          }
+        });
     } else {
       setFormErrors(errors);
     }
@@ -61,24 +82,24 @@ const Udlaanssystem = () => {
             <label>Elevnummer:</label>
             <input
               type="text"
-              name="elevnummer"
-              value={formData.elevnummer}
+              name="elevNummer"
+              value={formData.elevNummer}
               onChange={handleChange}
               required
             />
-            {formErrors.elevnummer && <div className="error">{formErrors.elevnummer}</div>}
+            {formErrors.elevNummer && <div className="error">{formErrors.elevNummer}</div>}
           </div>
 
           <div className="form-group">
-            <label>Computernummer:</label>
+            <label>Registreringsnummer:</label>
             <input
               type="text"
-              name="computernummer"
-              value={formData.computernummer}
+              name="registreringsNummer"
+              value={formData.registreringsNummer}
               onChange={handleChange}
               required
             />
-            {formErrors.computernummer && <div className="error">{formErrors.computernummer}</div>}
+            {formErrors.registreringsNummer && <div className="error">{formErrors.registreringsNummer}</div>}
           </div>
 
           <div className="form-group">
